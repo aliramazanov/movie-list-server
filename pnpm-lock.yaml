@@ -44,6 +44,9 @@ importers:
       cloudinary:
         specifier: ^2.5.1
         version: 2.5.1
+      mongoose:
+        specifier: ^8.8.3
+        version: 8.8.3
       passport:
         specifier: ^0.7.0
         version: 0.7.0

@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { MovieModule } from './movie/movie.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { MovieModule } from './movie/movie.module';
     AuthModule,
     MovieModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [CloudinaryService],
 })
 export class AppModule {}
