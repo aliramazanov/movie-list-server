@@ -9,12 +9,13 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const frontendUrl = configService.get<string>('FRONTEND_URL');
+
   const origins = frontendUrl
     ? frontendUrl.split(',').map((origin) => origin.trim())
-    : ['http://localhost:3000', 'https://cytric-movie-list-client.vercel.app/'];
+    : '*';
 
   app.enableCors({
-    origin: origins,
+    origin: origins === '*' ? true : origins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
     credentials: true,
@@ -25,7 +26,9 @@ async function bootstrap() {
 
   await app.listen(port, host);
   logger.log(`Application is running on: http://${host}:${port}`);
-  logger.log(`CORS enabled for origins: ${origins.join(', ')}`);
+  logger.log(
+    `CORS enabled for origins: ${origins === '*' ? 'All Origins' : origins.join(', ')}`,
+  );
 }
 
 bootstrap().catch((error) => {
