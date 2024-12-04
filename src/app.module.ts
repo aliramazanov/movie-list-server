@@ -9,7 +9,11 @@ import { MovieModule } from './movie/movie.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['mongo.config.env', 'cloudinary.config.env'],
+      envFilePath: [
+        'mongo.config.env',
+        'cloudinary.config.env',
+        'client.config.env',
+      ],
     }),
 
     MongooseModule.forRootAsync({
