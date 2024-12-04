@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "7e0af311-fbb5-40f7-b68b-c81996006ee7",
+		"name": "Movie List",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29487700"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"batman@example.com\",\r\n    \"username\": \"batman\",\r\n    \"firstname\": \"Batman\",\r\n    \"lastname\": \"Gotham\",\r\n    \"password\": \"123456\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"pm.environment.set('token', response.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"batman\",\r\n    \"password\": \"123456\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/auth/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movies",
+			"item": [
+				{
+					"name": "Create Movie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"pm.environment.set('movieId', response.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Test Movie",
+									"type": "text"
+								},
+								{
+									"key": "year",
+									"value": "2024",
+									"type": "text"
+								},
+								{
+									"key": "poster",
+									"type": "file",
+									"src": "postman-cloud:///1efb1d0a-98cd-4df0-9385-65823ab8d8d0"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/movie",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movie"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Movies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/movie?page=1&limit=8&sortBy=createdAt&order=desc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movie"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "8"
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt"
+								},
+								{
+									"key": "order",
+									"value": "desc"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Movie by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/movie/{{movieId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movie",
+								"{{movieId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Movie",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Updated Movie Title",
+									"type": "text"
+								},
+								{
+									"key": "year",
+									"value": "2023",
+									"type": "text"
+								},
+								{
+									"key": "poster",
+									"type": "file",
+									"src": "/path/to/your/new-image.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/movie/{{movieId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movie",
+								"{{movieId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Movie",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/movie/{{movieId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"movie",
+								"{{movieId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": []
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "movieId",
+			"value": ""
+		}
+	]
+}
